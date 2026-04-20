@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>사회적경제 네트워크 디렉토리</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Montserrat:wght@700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blue-deep: #1246B5;
+    --blue-main: #1A5FE8;
+    --blue-mid: #3B7FF5;
+    --blue-light: #6AAAFB;
+    --blue-pale: #EAF1FF;
+    --blue-ultra: #F0F5FF;
+    --white: #FFFFFF;
+    --gray-1: #F7F9FC;
+    --gray-2: #E8EDF5;
+    --gray-3: #B0BBC8;
+    --gray-text: #4A5568;
+    --text-dark: #1A202C;
+    --accent: #FF6B35;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background: var(--blue-ultra);
+    color: var(--text-dark);
+    min-height: 100vh;
+  }
+
+  /* ─── HEADER ─── */
+  header {
+    background: linear-gradient(135deg, var(--blue-deep) 0%, var(--blue-main) 50%, var(--blue-mid) 100%);
+    padding: 48px 40px 56px;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.05);
+    top: -200px; right: -100px;
+  }
+  header::after {
+    content: '';
+    position: absolute;
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.07);
+    bottom: -100px; left: 60px;
+  }
+  .header-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+  .header-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.15);
+    color: rgba(255,255,255,0.9);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    padding: 5px 14px;
+    border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.25);
+    margin-bottom: 16px;
+    text-transform: uppercase;
+  }
+  header h1 {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 900;
+    font-size: 36px;
+    color: var(--white);
+    line-height: 1.2;
+    margin-bottom: 10px;
+  }
+  header h1 span {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    display: block;
+    color: rgba(255,255,255,0.65);
+    margin-bottom: 8px;
+  }
+  .header-sub {
+    color: rgba(255,255,255,0.75);
+    font-size: 14px;
+    margin-top: 8px;
+  }
+  .header-count {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 30px;
+    padding: 6px 16px;
+    font-size: 13px;
+    color: var(--white);
+    margin-top: 20px;
+    font-weight: 500;
+  }
+  .header-count strong { font-weight: 900; font-size: 18px; font-family: 'Montserrat', sans-serif; }
+
+  /* ─── FILTER AREA ─── */
+  .filter-wrap {
+    background: var(--white);
+    border-bottom: 1px solid var(--gray-2);
+    padding: 20px 40px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 16px rgba(26,95,232,0.08);
+  }
+  .filter-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .search-box {
+    flex: 1;
+    min-width: 200px;
+    position: relative;
+  }
+  .search-box input {
+    width: 100%;
+    padding: 10px 16px 10px 40px;
+    border: 1.5px solid var(--gray-2);
+    border-radius: 10px;
+    font-size: 14px;
+    font-family: 'Noto Sans KR', sans-serif;
+    color: var(--text-dark);
+    background: var(--gray-1);
+    transition: border-color 0.2s, background 0.2s;
+    outline: none;
+  }
+  .search-box input:focus {
+    border-color: var(--blue-main);
+    background: var(--white);
+  }
+  .search-box::before {
+    content: '🔍';
+    position: absolute;
+    left: 13px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 13px;
+    pointer-events: none;
+  }
+  .filter-select {
+    padding: 10px 14px;
+    border: 1.5px solid var(--gray-2);
+    border-radius: 10px;
+    font-size: 13px;
+    font-family: 'Noto Sans KR', sans-serif;
+    color: var(--gray-text);
+    background: var(--gray-1);
+    cursor: pointer;
+    outline: none;
+    transition: border-color 0.2s;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%231A5FE8' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 32px;
+  }
+  .filter-select:focus { border-color: var(--blue-main); background-color: var(--white); }
+  .filter-reset {
+    padding: 10px 16px;
+    border: 1.5px solid var(--gray-2);
+    border-radius: 10px;
+    font-size: 13px;
+    font-family: 'Noto Sans KR', sans-serif;
+    color: var(--gray-3);
+    background: var(--white);
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .filter-reset:hover { border-color: var(--blue-main); color: var(--blue-main); }
+
+  /* ─── RESULT COUNT ─── */
+  .result-bar {
+    max-width: 1100px;
+    margin: 24px auto 0;
+    padding: 0 40px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .result-count {
+    font-size: 13px;
+    color: var(--gray-text);
+  }
+  .result-count strong { color: var(--blue-main); font-weight: 700; }
+
+  /* ─── GRID ─── */
+  .grid {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 20px 40px 60px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
+  }
+
+  /* ─── CARD ─── */
+  .card {
+    background: var(--white);
+    border-radius: 16px;
+    border: 1.5px solid var(--gray-2);
+    padding: 24px;
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    animation: fadeUp 0.4s ease both;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(26,95,232,0.12);
+    border-color: var(--blue-light);
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+  }
+  .card-name {
+    font-weight: 900;
+    font-size: 17px;
+    color: var(--text-dark);
+    line-height: 1.3;
+  }
+  .badge-sector {
+    display: inline-block;
+    background: var(--blue-pale);
+    color: var(--blue-main);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+    margin-left: 8px;
+    flex-shrink: 0;
+  }
+  .card-meta {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+  }
+  .badge-year {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 20px;
+    background: #FFF3ED;
+    color: #D4510A;
+  }
+  .badge-rep {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    color: var(--gray-text);
+    background: var(--gray-1);
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-weight: 500;
+  }
+  .card-bio {
+    font-size: 13px;
+    color: var(--gray-text);
+    line-height: 1.7;
+    margin-bottom: 16px;
+    flex: 1;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .card-divider {
+    height: 1px;
+    background: var(--gray-2);
+    margin-bottom: 14px;
+  }
+  .card-links {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .link-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 5px 12px;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.15s;
+    color: var(--blue-main);
+    background: var(--blue-pale);
+    border: 1px solid rgba(26,95,232,0.12);
+  }
+  .link-btn:hover {
+    background: var(--blue-main);
+    color: var(--white);
+    border-color: var(--blue-main);
+  }
+  .link-btn.email {
+    color: #0D7A5E;
+    background: #EAFAF4;
+    border-color: rgba(13,122,94,0.15);
+  }
+  .link-btn.email:hover { background: #0D7A5E; color: var(--white); }
+
+  /* ─── EMPTY ─── */
+  .empty {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 80px 20px;
+    color: var(--gray-3);
+  }
+  .empty-icon { font-size: 48px; margin-bottom: 16px; }
+  .empty p { font-size: 15px; }
+
+  /* ─── FOOTER ─── */
+  footer {
+    text-align: center;
+    padding: 30px;
+    font-size: 12px;
+    color: var(--gray-3);
+    border-top: 1px solid var(--gray-2);
+  }
+
+  @media (max-width: 640px) {
+    header { padding: 32px 20px 40px; }
+    header h1 { font-size: 26px; }
+    .filter-wrap { padding: 16px 20px; }
+    .grid { padding: 16px 20px 40px; grid-template-columns: 1fr; }
+    .result-bar { padding: 0 20px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="header-badge">Social Economy Network</div>
+    <h1>
+      <span>TOGETHER WE GROW</span>
+      사회적경제 네트워크 디렉토리
+    </h1>
+    <p class="header-sub">함께만드는세상 · 사회연대은행</p>
+    <div class="header-count">
+      <strong id="totalCount">0</strong>개 기업이 함께합니다
+    </div>
+  </div>
+</header>
+
+<div class="filter-wrap">
+  <div class="filter-inner">
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="기업명 또는 비즈니스 키워드 검색">
+    </div>
+    <select class="filter-select" id="sectorFilter">
+      <option value="">업종 전체</option>
+    </select>
+    <select class="filter-select" id="yearFilter">
+      <option value="">업력 전체</option>
+      <option value="1년 미만">1년 미만</option>
+      <option value="1~3년">1~3년</option>
+      <option value="3~7년">3~7년</option>
+      <option value="7년 이상">7년 이상</option>
+    </select>
+    <button class="filter-reset" id="resetBtn">초기화</button>
+  </div>
+</div>
+
+<div class="result-bar">
+  <p class="result-count"><strong id="resultCount">0</strong>개 기업이 표시되고 있습니다</p>
+</div>
+
+<div class="grid" id="cardGrid"></div>
+
+<footer>ⓒ 사회연대은행 · 함께만드는세상</footer>
+
+<script>
+// ────────────────────────────────────────────────
+//  ★ 데이터 연결 방법
+//  Google Sheets를 게시(파일 > 공유 > 웹에 게시 > CSV)한 뒤
+//  아래 SHEET_CSV_URL에 붙여넣으면 실데이터로 자동 연동됩니다.
+//  컬럼 순서: 기업명, 대표자명, 이메일, 업종, 창업연월(YYYY-MM),
+//             주요비즈니스, 홈페이지, 링크드인, SNS1, SNS2
+// ────────────────────────────────────────────────
+const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSeZgmxeLI4T3ChZFOyzYn1bBftc9o3xc9oHyC7KdgW18LQExoPn2Hq-Z9hVOXERHHZWtJklSHSoIbj/pub?gid=0&single=true&output=csv';
+
+// 샘플 데이터 (SHEET_CSV_URL 입력 전까지 표시됨)
+const SAMPLE_DATA = [
+  { name:'초록바람 협동조합', rep:'김민준', email:'hello@greenbaram.kr', sector:'협동조합', founded:'2017-03', bio:'도시 농업과 친환경 먹거리 유통을 연결하는 사회적경제 조직입니다. 로컬 생산자와 소비자를 직접 이어주는 플랫폼을 운영합니다.', web:'https://example.com', linkedin:'', sns1:'https://instagram.com/greenbaram', sns2:'' },
+  { name:'함께웃음 사회적기업', rep:'이수진', email:'contact@togetherjoy.org', sector:'사회적기업', founded:'2019-07', bio:'발달장애인의 바리스타 직업훈련 및 카페 창업을 지원합니다. 현재 5개 매장을 직접 운영 중입니다.', web:'https://example.com', linkedin:'https://linkedin.com', sns1:'', sns2:'' },
+  { name:'소셜임팩트랩', rep:'박재현', email:'lab@socialimpact.kr', sector:'소셜벤처', founded:'2021-11', bio:'사회문제 해결을 위한 데이터 분석 및 임팩트 측정 솔루션을 제공합니다. 50개 이상 비영리 단체와 협업 경험을 보유합니다.', web:'https://example.com', linkedin:'https://linkedin.com', sns1:'https://instagram.com', sns2:'https://youtube.com' },
+  { name:'지역에너지 마을기업', rep:'최영희', email:'energy@village.kr', sector:'마을기업', founded:'2016-04', bio:'태양광 에너지 자립 마을 조성 사업을 운영합니다. 주민 주도의 에너지 전환으로 탄소중립을 실천합니다.', web:'https://example.com', linkedin:'', sns1:'', sns2:'' },
+  { name:'자립나무 자활기업', rep:'정동욱', email:'tree@jalip.org', sector:'자활기업', founded:'2015-01', bio:'취약계층 대상 친환경 인테리어 및 목공 서비스를 제공합니다. 지역 내 50명 이상의 일자리를 창출하였습니다.', web:'', linkedin:'', sns1:'https://blog.naver.com/jaliptree', sns2:'' },
+  { name:'청년공유 사회적협동조합', rep:'한가람', email:'youth@sharing.coop', sector:'사회적협동조합', founded:'2022-06', bio:'청년 주거 문제 해결을 위한 공유주택 운영 및 커뮤니티 프로그램을 진행합니다.', web:'https://example.com', linkedin:'https://linkedin.com', sns1:'https://instagram.com', sns2:'' },
+  { name:'돌봄플러스 사회적기업', rep:'임소영', email:'care@dolbomplus.kr', sector:'사회적기업', founded:'2018-09', bio:'어르신과 장애인을 위한 맞춤형 돌봄 서비스를 제공합니다. 지역 사회 내 통합돌봄 생태계를 만들어갑니다.', web:'https://example.com', linkedin:'', sns1:'https://instagram.com', sns2:'https://youtube.com' },
+  { name:'로컬크리에이터스', rep:'조민혁', email:'local@creators.kr', sector:'소셜벤처', founded:'2023-02', bio:'지역 소상공인의 브랜딩과 온라인 판로를 지원합니다. 지역 자원을 활용한 콘텐츠 제작 및 유통을 전문으로 합니다.', web:'https://example.com', linkedin:'https://linkedin.com', sns1:'https://instagram.com', sns2:'' },
+  { name:'공정무역 협동조합', rep:'윤지은', email:'fair@trade.coop', sector:'협동조합', founded:'2014-08', bio:'개발도상국 생산자와 직거래를 통한 공정무역 제품 유통 및 교육 사업을 진행합니다.', web:'https://example.com', linkedin:'', sns1:'https://instagram.com', sns2:'https://youtube.com' },
+  { name:'두런두런 마을기업', rep:'강현수', email:'durun@maul.kr', sector:'마을기업', founded:'2020-03', bio:'지역 청소년 방과후 프로그램과 주민 커뮤니티 공간을 운영합니다. 마을 공동체 회복을 목표로 합니다.', web:'', linkedin:'', sns1:'https://instagram.com', sns2:'' },
+];
+
+function calcYears(founded) {
+  if (!founded) return '';
+  const now = new Date();
+  const f = new Date(founded + '-01');
+  const diff = (now - f) / (1000 * 60 * 60 * 24 * 365.25);
+  if (diff < 1) return '1년 미만';
+  if (diff < 3) return '1~3년';
+  if (diff < 7) return '3~7년';
+  return '7년 이상';
+}
+
+function detectSNS(url) {
+  if (!url) return null;
+  const u = url.toLowerCase();
+  if (u.includes('instagram.com'))  return { icon: '📷', name: '인스타그램' };
+  if (u.includes('facebook.com'))   return { icon: '📘', name: '페이스북' };
+  if (u.includes('youtube.com') || u.includes('youtu.be')) return { icon: '▶️', name: '유튜브' };
+  if (u.includes('twitter.com') || u.includes('x.com'))   return { icon: '🐦', name: 'X(트위터)' };
+  if (u.includes('blog.naver.com')) return { icon: '📝', name: '네이버블로그' };
+  if (u.includes('tistory.com'))    return { icon: '📝', name: '티스토리' };
+  if (u.includes('linkedin.com'))   return { icon: 'in', name: '링크드인' };
+  if (u.includes('threads.net'))    return { icon: '🧵', name: 'Threads' };
+  if (u.includes('tiktok.com'))     return { icon: '🎵', name: '틱톡' };
+  return { icon: '📱', name: 'SNS' };
+}
+
+function makeCard(d) {
+  const years = calcYears(d.founded);
+  const links = [];
+  if (d.web)      links.push(`<a class="link-btn" href="${d.web}" target="_blank">🌐 홈페이지</a>`);
+  if (d.linkedin) links.push(`<a class="link-btn" href="${d.linkedin}" target="_blank">in 링크드인</a>`);
+  [d.sns1, d.sns2].forEach(sns => {
+    if (!sns) return;
+    const p = detectSNS(sns);
+    links.push(`<a class="link-btn" href="${sns}" target="_blank">${p.icon} ${p.name}</a>`);
+  });
+  if (d.email)    links.push(`<a class="link-btn email" href="mailto:${d.email}" target="_blank">✉ 문의</a>`);
+
+  return `
+  <div class="card" data-name="${d.name}" data-sector="${d.sector}" data-years="${years}" data-bio="${d.bio}">
+    <div class="card-top">
+      <div class="card-name">${d.name}</div>
+      <span class="badge-sector">${d.sector}</span>
+    </div>
+    <div class="card-meta">
+      <span class="badge-rep">👤 ${d.rep}</span>
+      ${years ? `<span class="badge-year">📅 ${years}</span>` : ''}
+    </div>
+    <p class="card-bio">${d.bio}</p>
+    ${links.length ? `<div class="card-divider"></div><div class="card-links">${links.join('')}</div>` : ''}
+  </div>`;
+}
+
+let allData = [];
+
+function populateSectorFilter(data) {
+  const sectors = [...new Set(data.map(d => d.sector).filter(Boolean))].sort();
+  const sel = document.getElementById('sectorFilter');
+  sectors.forEach(s => {
+    const opt = document.createElement('option');
+    opt.value = s; opt.textContent = s;
+    sel.appendChild(opt);
+  });
+}
+
+function renderCards(data) {
+  const grid = document.getElementById('cardGrid');
+  document.getElementById('resultCount').textContent = data.length;
+  if (!data.length) {
+    grid.innerHTML = `<div class="empty"><div class="empty-icon">🔍</div><p>검색 결과가 없습니다</p></div>`;
+    return;
+  }
+  grid.innerHTML = data.map((d, i) => {
+    const card = makeCard(d);
+    return card.replace('class="card"', `class="card" style="animation-delay:${i * 0.04}s"`);
+  }).join('');
+}
+
+function filterData() {
+  const q = document.getElementById('searchInput').value.toLowerCase();
+  const sector = document.getElementById('sectorFilter').value;
+  const year = document.getElementById('yearFilter').value;
+  return allData.filter(d => {
+    const matchQ = !q || d.name.toLowerCase().includes(q) || d.bio.toLowerCase().includes(q);
+    const matchS = !sector || d.sector === sector;
+    const matchY = !year || calcYears(d.founded) === year;
+    return matchQ && matchS && matchY;
+  });
+}
+
+function init(data) {
+  allData = data;
+  document.getElementById('totalCount').textContent = data.length;
+  populateSectorFilter(data);
+  renderCards(data);
+
+  ['searchInput','sectorFilter','yearFilter'].forEach(id =>
+    document.getElementById(id).addEventListener('input', () => renderCards(filterData()))
+  );
+  document.getElementById('resetBtn').addEventListener('click', () => {
+    document.getElementById('searchInput').value = '';
+    document.getElementById('sectorFilter').value = '';
+    document.getElementById('yearFilter').value = '';
+    renderCards(allData);
+  });
+}
+
+// CSV 파싱
+function parseCSV(csv) {
+  const lines = csv.trim().split('\n');
+  return lines.slice(1).map(line => {
+    const cols = line.split(',').map(c => c.replace(/^"|"$/g, '').trim());
+    return { name:cols[0], rep:cols[1], email:cols[2], sector:cols[3], founded:cols[4], bio:cols[5], web:cols[6], linkedin:cols[7], sns1:cols[8], sns2:cols[9] };
+  }).filter(d => d.name);
+}
+
+if (SHEET_CSV_URL) {
+  fetch(SHEET_CSV_URL)
+    .then(r => r.text())
+    .then(csv => init(parseCSV(csv)))
+    .catch(() => init(SAMPLE_DATA));
+} else {
+  init(SAMPLE_DATA);
+}
+</script>
+</body>
+</html>
